@@ -2,50 +2,48 @@ export async function onRequestPost(context) {
 
     const body = await context.request.json();
 
-    const response = await fetch("https://api.resend.com/emails", {
+    const response = await fetch(
+        "https://api.resend.com/emails",
+        {
+            method: "POST",
 
-        method: "POST",
+            headers: {
+                Authorization: `Bearer ${context.env.RESEND_API_KEY}`,
+                "Content-Type": "application/json"
+            },
 
-        headers: {
+            body: JSON.stringify({
 
-            Authorization: `Bearer ${context.env.RESEND_API_KEY}`
+                from: "AutoColor Colombia <onboarding@resend.dev>",
 
-            "Content-Type": "application/json"
+                to: [
+                    "contactoautocolorcolombia@gmail.com"
+                ],
 
-        },
+                subject: "Nueva solicitud desde la página web",
 
-        body: JSON.stringify({
+                html: `
 
-            from: "AutoColor Colombia <onboarding@resend.dev>",
+                    <h2>Nueva solicitud</h2>
 
-            to: ["contacto@autocolorcolombia.com"],
+                    <p><strong>Nombre:</strong> ${body.nombre}</p>
 
-            subject: "Nueva solicitud desde la página web",
+                    <p><strong>Correo:</strong> ${body.correo}</p>
 
-            html: `
+                    <p><strong>Teléfono:</strong> ${body.telefono}</p>
 
-                <h2>Nueva solicitud</h2>
+                    <p><strong>Mensaje:</strong></p>
 
-                <p><strong>Nombre:</strong> ${body.nombre}</p>
+                    <p>${body.mensaje}</p>
 
-                <p><strong>Correo:</strong> ${body.correo}</p>
+                `
+            })
 
-                <p><strong>Teléfono:</strong> ${body.telefono}</p>
+        }
+    );
 
-                <p><strong>Mensaje:</strong></p>
+    const data = await response.json();
 
-                <p>${body.mensaje}</p>
-
-            `
-
-        })
-
-    });
-
-    return Response.json({
-
-        message: "Solicitud enviada correctamente."
-
-    });
+    return Response.json(data);
 
 }

@@ -34,31 +34,63 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 
 });
 
-/* MENSAJE DE CONFIRMACIÓN */
-const form = document.querySelector(".contact-form");
+/* ENVÍO DEL FORMULARIO */
+const form = document.getElementById("contactForm");
 
-form.addEventListener("submit", function(e){
+form.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
-    // Mostrar tarjeta
-    document
-    .getElementById("successCard")
-    .classList.add("active");
+    const datos = {
 
-    // Limpiar formulario
-    form.reset();
+        nombre: document.getElementById("nombre").value,
+        correo: document.getElementById("correo").value,
+        telefono: document.getElementById("telefono").value,
+        mensaje: document.getElementById("mensaje").value
 
-    // Ocultar automáticamente después de 6 segundos
-    setTimeout(() => {
+    };
 
+    try {
+
+        const response = await fetch("/api/contacto", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(datos)
+
+        });
+
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        // Mostrar tarjeta de éxito
         document
-        .getElementById("successCard")
-        .classList.remove("active");
+            .getElementById("successCard")
+            .classList.add("active");
 
-    }, 6000);
+        form.reset();
+
+        setTimeout(() => {
+
+            document
+                .getElementById("successCard")
+                .classList.remove("active");
+
+        }, 6000);
+
+    } catch {
+
+        alert("No fue posible enviar la solicitud.");
+
+    }
 
 });
+
 
 
 

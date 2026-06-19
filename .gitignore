@@ -1,0 +1,20 @@
+# Dependencias
+node_modules/
+
+# Archivos temporales de Cloudflare
+.wrangler/
+
+# Variables privadas
+.env
+.env.local
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Configuración de VS Code (opcional)
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*

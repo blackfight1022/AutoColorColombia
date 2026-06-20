@@ -1,5 +1,7 @@
 export async function onRequestPost(context) {
 
+    console.log("KEY:", context.env.RESEND_API_KEY);
+
     const body = await context.request.json();
 
     const response = await fetch(

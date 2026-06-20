@@ -44,6 +44,21 @@ export async function onRequestPost(context) {
 
     const data = await response.json();
 
+    console.log("Respuesta de Resend:", data);
+
+if (!response.ok) {
+    return new Response(
+        JSON.stringify(data),
+        {
+            status: response.status,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+    );
+}
+
+
     return Response.json(data);
 
 }
